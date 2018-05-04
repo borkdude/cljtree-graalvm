@@ -12,11 +12,12 @@ This repo is a combination of:
 ## Usage
 
 ```sh
-./cljtree src
-
+$ ./cljtree src
 src
 └── cljtree_graalvm
     └── core.clj
+
+2 directories, 1 files
 ```
 
 The path argument is optional and will default to the current directory.
