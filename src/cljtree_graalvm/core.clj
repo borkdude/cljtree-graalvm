@@ -13,27 +13,44 @@
 
 (def SPACER   "    ")
 
+(defn prefix-line
+  [entry prefix]
+  (update entry :line #(str prefix %)))
+
 (defn render-tree [^java.io.File path]
   (let [children (.listFiles path)]
-    (conj (mapcat
+    (cons {:line (.getName path)
+           :dir? (.isDirectory path)}
+          (mapcat
            (fn [child index]
              (let [subtree (render-tree child)
                    last? (= index (dec (count children)))
                    prefix-first (if last? L-branch T-branch)
                    prefix-rest  (if last? SPACER I-branch)]
-               (cons (str prefix-first (first subtree))
-                     (map #(str prefix-rest %) (next subtree)))))
+               (cons (prefix-line (first subtree) prefix-first)
+                     (map #(prefix-line % prefix-rest) (next subtree)))))
            children
-           (range))
-          (.getName path))))
+           (range)))))
 
 (defn -main [& args]
   (let [path (io/file
               (or (first args)
                   "."))
-        tree (render-tree path)]
-    (doseq [l tree]
-      (println l))))
+        entries (render-tree path)
+        {:keys [total dirs]}
+        (reduce (fn [acc {:keys [line dir?]}]
+                  (println line)
+                  (-> acc
+                      (update :total inc)
+                      (cond-> dir?
+                        (update :dirs inc))))
+                {:total 0
+                 :dirs 0}
+                entries)]
+    (println)
+    (println
+     (format "%s directories, %s files"
+             dirs (- total dirs)))))
 
 ;;;; Scratch
 
