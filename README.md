@@ -1,10 +1,11 @@
+
 # cljtree-graalvm
 
 A Clojure version of `tree` built with GraalVM.
 
 ## Credits
 
-This repo is a combination of:
+This repo is inspired by:
 
 - https://gitlab.com/konrad.mrozek/cljfmt-graalvm
 - https://github.com/lambdaisland/birch
@@ -18,6 +19,14 @@ src
     └── core.clj
 
 2 directories, 1 files
+
+$ ./cljtree src --edn
+{:name "src",
+ :type "directory",
+ :contents
+ ({:name "cljtree_graalvm",
+   :type "directory",
+   :contents ({:name "core.clj", :type "file"})})}
 ```
 
 The path argument is optional and will default to the current directory.
