@@ -4,7 +4,6 @@
             [clojure.string :as str]
             [clojure.pprint :refer [pprint]]
             [clojure.tools.cli :refer [parse-opts]])
-  (:import [java.io.File])
   (:gen-class))
 
 (def I-branch "│   ")
