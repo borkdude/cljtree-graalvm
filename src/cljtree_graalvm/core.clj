@@ -1,9 +1,10 @@
 (ns cljtree-graalvm.core
   "Tree command, inspired by https://github.com/lambdaisland/birch"
   (:require [clojure.java.io :as io]
-            [clojure.string :as str]
             [clojure.pprint :refer [pprint]]
-            [clojure.tools.cli :refer [parse-opts]])
+            [clojure.string :as str]
+            [clojure.tools.cli :refer [parse-opts]]
+            [io.aviso.ansi :as ansi])
   (:gen-class))
 
 (def I-branch "│   ")
@@ -25,19 +26,20 @@
                   (map file-tree children)))))
 
 (defn render-tree
-  [file-tree]
-  (let [children (:contents file-tree)]
-    (cons (:name file-tree)
-          (mapcat
-           (fn [child index]
-             (let [subtree (render-tree child)
-                   last? (= index (dec (count children)))
-                   prefix-first (if last? L-branch T-branch)
-                   prefix-rest  (if last? SPACER I-branch)]
-               (cons (str prefix-first (first subtree))
-                     (map #(str prefix-rest %) (next subtree)))))
-           children
-           (range)))))
+  [{:keys [:name :contents]} colorize?]
+  (cons (if colorize?
+          (ansi/blue name)
+          name)
+        (mapcat
+         (fn [child index]
+           (let [subtree (render-tree child colorize?)
+                 last? (= index (dec (count contents)))
+                 prefix-first (if last? L-branch T-branch)
+                 prefix-rest  (if last? SPACER I-branch)]
+             (cons (str prefix-first (first subtree))
+                   (map #(str prefix-rest %) (next subtree)))))
+         contents
+         (range))))
 
 (defn stats
   [file-tree]
@@ -48,7 +50,8 @@
                          0)}
          (map stats (:contents file-tree))))
 
-(def cli-options [["-e" "--edn" "Output tree as EDN"]])
+(def cli-options [["-E" "--edn" "Output tree as EDN"]
+                  ["-c" "--color" "Colorize the output"]])
 
 (defn -main [& args]
   (let [{:keys [options arguments]}
@@ -62,7 +65,7 @@
     (if (:edn options)
       (pprint tree)
       (do
-        (doseq [l (render-tree tree)]
+        (doseq [l (render-tree tree (:color options))]
           (println l))
         (println)
         (println
@@ -72,4 +75,4 @@
 ;;;; Scratch
 
 (comment
-  (-main "src" "-e"))
+  (-main "src" "-e" "-c"))

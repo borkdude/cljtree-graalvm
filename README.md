@@ -29,7 +29,8 @@ $ ./cljtree src --edn
    :contents ({:name "core.clj", :type "file"})})}
 ```
 
-The path argument is optional and will default to the current directory.
+The path argument is optional and will default to the current directory. There
+is also a `--color` flag for colored output.
 
 ## Build
 
@@ -58,7 +59,3 @@ lein uberjar
 ``` sh
 native-image -jar target/cljfmt-graalvm-0.1.0-SNAPSHOT-standalone.jar -H:Name="cljtree -H:+ReportUnsupportedElementsAtRuntime"
 ```
-
-## TODO
-
-- Colored output
