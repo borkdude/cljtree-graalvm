@@ -12,25 +12,14 @@ This repo is inspired by:
 
 ## Usage
 
-```sh
-$ ./cljtree src
-src
-└── cljtree_graalvm
-    └── core.clj
+![Usage](cljtree.gif)
 
-2 directories, 1 files
+## Options
 
-$ ./cljtree src --edn
-{:name "src",
- :type "directory",
- :contents
- ({:name "cljtree_graalvm",
-   :type "directory",
-   :contents ({:name "core.clj", :type "file"})})}
-```
+- `--color` or `-c`: colorize output
+- `--edn` or `-E`: output EDN
 
-The path argument is optional and will default to the current directory. There
-is also a `--color` flag for colored output.
+The path argument is optional and will default to the current directory.
 
 ## Build
 
@@ -41,7 +30,7 @@ is also a `--color` flag for colored output.
 ```sh
 export JAVA_HOME=~/Downloads/graalvm-1.0.0-rc1/Contents/Home
 ```
-    
+
 - Set the `PATH` to use GraalVM's binaries, e.g.
 
 ```sh
