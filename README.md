@@ -57,5 +57,5 @@ lein uberjar
 - Finally, create the binary:
 
 ``` sh
-native-image -jar target/cljtree-graalvm-0.1.0-SNAPSHOT-standalone.jar -H:Name="cljtree -H:+ReportUnsupportedElementsAtRuntime"
+native-image -jar target/cljtree-graalvm-0.1.0-SNAPSHOT-standalone.jar -H:Name="cljtree" -H:+ReportUnsupportedElementsAtRuntime
 ```
